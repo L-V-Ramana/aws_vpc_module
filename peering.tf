@@ -1,4 +1,4 @@
-resource "aws_vpc_peering_connection""default"{
+resource "aws_vpc_peering_connection""defaulted"{
     count = var.is_peering_required == true ? 1 : 0
     vpc_id = aws_vpc.roboshop_vpc.id
     peer_vpc_id = data.aws_vpc.default.id
@@ -19,26 +19,26 @@ resource "aws_vpc_peering_connection""default"{
 resource "aws_route""default_route"{
     count = var.is_peering_required == true ? 1 : 0
     destination_cidr_block = var.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.default[count.index].id
+    vpc_peering_connection_id = aws_vpc_peering_connection.defaulted[count.index].id
     route_table_id = data.aws_route_table.default_vpc.id
 
 }
 
 resource "aws_route""public-route"{
     count = var.is_peering_required == true ? 1 : 0
-    destination_cidr_block = data.aws_vpc.default.id
+    destination_cidr_block = data.aws_vpc.default.cidr_block
     route_table_id = aws_route_table.public.id
-    vpc_peering_connection_id = aws_vpc_peering_connection.default.id
+    vpc_peering_connection_id = aws_vpc_peering_connection.defaulted[count.index].id
 }
 resource "aws_route""private-route"{
     count = var.is_peering_required == true ? 1 : 0
-    destination_cidr_block = data.aws_vpc.default.id
+    destination_cidr_block = data.aws_vpc.default.cidr_block
     route_table_id = aws_route_table.private.id
-    vpc_peering_connection_id = aws_vpc_peering_connection.default.id
+    vpc_peering_connection_id = aws_vpc_peering_connection.defaulted[count.index].id
 }
 resource "aws_route""database-route"{
     count = var.is_peering_required == true ? 1 : 0
-    destination_cidr_block = data.aws_vpc.default.id
+    destination_cidr_block = data.aws_vpc.default.cidr_block
     route_table_id = aws_route_table.database.id
-    vpc_peering_connection_id = aws_vpc_peering_connection.default.id
+    vpc_peering_connection_id = aws_vpc_peering_connection.defaulted[count.index].id
 }

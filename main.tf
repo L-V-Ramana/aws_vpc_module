@@ -21,7 +21,7 @@ resource"aws_subnet""public"{
     availability_zone = local.availability_zone[count.index]
     map_public_ip_on_launch = true 
 
-    tags = merge(local.tags,{
+    tags = merge(local.tags,var.public_subnet_tags,{
         Name = "${var.project}-${var.environment}public- ${local.availability_zone[count.index]}"
     })
 }
@@ -118,7 +118,7 @@ resource "aws_route""batabase"{
 resource "aws_route_table_association""public"{
   count = length(var.public_subnet_cidrs)
   subnet_id = aws_subnet.public[count.index].id
-  route_table_id = aws_rroute_table.public.id
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association""private"{
