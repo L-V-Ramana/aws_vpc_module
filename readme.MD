@@ -16,4 +16,7 @@
 
 ## Outputs
 
-* vpc_id = Exports the vpc id created by module
+* vpc_id - Exports the vpc id created by module
+* public_subnet_id - throws public subnet id
+* private_subnet_id  - throws private subnet id
+* database_subnet_id  - throws database subnet id
